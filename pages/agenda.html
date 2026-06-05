@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Agenda — Mi App Personal</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+  <nav class="menu-inferior">
+    <div class="menu-logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Mi App
+    </div>
+    <a href="../index.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Inicio
+    </a>
+    <a href="agenda.html" class="menu-item activo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Agenda
+    </a>
+    <a href="tareas.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Tareas
+    </a>
+    <a href="notas.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+      Notas
+    </a>
+    <a href="finanzas.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Finanzas
+    </a>
+    <a href="datos.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Datos
+    </a>
+    <a href="conversor.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+      Conversor
+    </a>
+    <a href="ordenar.html" class="menu-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Ordenar
+    </a>
+  </nav>
+
+  <header class="encabezado">
+    <h1>Agenda</h1>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="interruptor" id="btnTema" aria-label="Cambiar tema"></button>
+      <button class="btn btn-primario" id="btnNuevoEvento" style="padding:8px 14px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo evento
+      </button>
+    </div>
+  </header>
+
+  <main class="contenido pagina-enter">
+
+    <!-- Navegación del mes -->
+    <div class="tarjeta" style="padding:12px 16px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+        <button class="btn btn-secundario" id="btnMesAnterior" style="padding:6px 12px;">‹</button>
+        <h2 id="tituloMes" style="font-size:1rem; font-weight:700;"></h2>
+        <button class="btn btn-secundario" id="btnMesSiguiente" style="padding:6px 12px;">›</button>
+      </div>
+
+      <!-- Encabezados de los días de la semana -->
+      <div class="calendario-semana">
+        <span>Lun</span><span>Mar</span><span>Mié</span>
+        <span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+      </div>
+
+      <!-- Cuadrícula del calendario (se rellena con JS) -->
+      <div id="calendarioGrid" class="calendario-grid"></div>
+    </div>
+
+    <!-- Eventos del día seleccionado -->
+    <div class="tarjeta" id="panelDia">
+      <div class="tarjeta-titulo" id="tituloDia">Selecciona un día</div>
+      <div id="eventosDia" class="lista-items"></div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: AGREGAR / EDITAR EVENTO -->
+  <div class="modal-fondo" id="modalEvento" style="display:none;">
+    <div class="modal-caja">
+      <div class="modal-titulo">
+        <span id="modalEventoTitulo">Nuevo evento</span>
+        <button class="modal-cerrar" id="btnCerrarModalEvento" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="formEvento" novalidate>
+        <input type="hidden" id="eventoId">
+
+        <div class="grupo-campo">
+          <label class="etiqueta" for="eventoTitulo">Título *</label>
+          <input class="campo" type="text" id="eventoTitulo" placeholder="Ej: Reunión de trabajo" maxlength="100" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label class="etiqueta" for="eventoFecha">Fecha *</label>
+          <input class="campo" type="date" id="eventoFecha" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="grupo-campo" style="margin-bottom:0;">
+            <label class="etiqueta" for="eventoHoraInicio">Hora inicio</label>
+            <input class="campo" type="time" id="eventoHoraInicio">
+          </div>
+          <div class="grupo-campo" style="margin-bottom:0;">
+            <label class="etiqueta" for="eventoHoraFin">Hora fin</label>
+            <input class="campo" type="time" id="eventoHoraFin">
+          </div>
+        </div>
+
+        <div class="grupo-campo" style="margin-top:14px;">
+          <label class="etiqueta" for="eventoDescripcion">Descripción</label>
+          <textarea class="campo" id="eventoDescripcion" rows="3" placeholder="Detalles del evento..." maxlength="500" style="resize:vertical;"></textarea>
+        </div>
+
+        <!-- Selector de color -->
+        <div class="grupo-campo">
+          <label class="etiqueta">Color</label>
+          <div id="selectorColor" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+        </div>
+
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-peligro" id="btnEliminarEvento" style="display:none; flex:0 0 auto;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+            Eliminar
+          </button>
+          <button type="submit" class="btn btn-primario">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/></svg>
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/db.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/modules/agenda.js"></script>
+</body>
+</html>

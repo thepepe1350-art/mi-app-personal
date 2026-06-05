@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MiApp">
+  <title>Tareas — Mi App Personal</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       MENÚ DE NAVEGACIÓN
+  =========================================== -->
+  <nav class="menu-inferior" id="menuNavegacion">
+
+    <div class="menu-logo" id="menuLogo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      Mi App
+    </div>
+
+    <a href="../index.html" class="menu-item" data-pagina="inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9,22 9,12 15,12 15,22"/>
+      </svg>
+      Inicio
+    </a>
+
+    <a href="agenda.html" class="menu-item" data-pagina="agenda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Agenda
+    </a>
+
+    <a href="tareas.html" class="menu-item activo" data-pagina="tareas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9,11 12,14 22,4"/>
+        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+      </svg>
+      Tareas
+    </a>
+
+    <a href="notas.html" class="menu-item" data-pagina="notas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14,2 14,8 20,8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Notas
+    </a>
+
+    <a href="finanzas.html" class="menu-item" data-pagina="finanzas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"/>
+        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+      </svg>
+      Finanzas
+    </a>
+
+    <a href="datos.html" class="menu-item" data-pagina="datos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      Datos
+    </a>
+
+    <a href="conversor.html" class="menu-item" data-pagina="conversor">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="17,1 21,5 17,9"/>
+        <path d="M3 11V9a4 4 0 014-4h14"/>
+        <polyline points="7,23 3,19 7,15"/>
+        <path d="M21 13v2a4 4 0 01-4 4H3"/>
+      </svg>
+      Conversor
+    </a>
+
+    <a href="ordenar.html" class="menu-item" data-pagina="ordenar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      Ordenar
+    </a>
+
+  </nav>
+
+  <!-- ==========================================
+       ENCABEZADO
+  =========================================== -->
+  <header class="encabezado">
+    <h1>Tareas</h1>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="interruptor" id="btnTema" title="Cambiar tema" aria-label="Cambiar modo claro/oscuro"></button>
+      <!-- Botón para agregar tarea nueva -->
+      <button class="btn btn-primario" id="btnAgregarTarea" style="padding:8px 14px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Nueva tarea
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       CONTENIDO PRINCIPAL
+  =========================================== -->
+  <main class="contenido pagina-enter">
+
+    <!-- Barra de filtros: por estado -->
+    <div class="tarjeta" style="padding:10px 12px; margin-bottom:12px;">
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+
+        <!-- Filtros por estado -->
+        <div style="display:flex; gap:6px; flex:1;">
+          <button class="btn-filtro activo" data-filtro-estado="todas">Todas</button>
+          <button class="btn-filtro" data-filtro-estado="pendientes">Pendientes</button>
+          <button class="btn-filtro" data-filtro-estado="completadas">Completadas</button>
+        </div>
+
+        <!-- Filtros por prioridad -->
+        <div style="display:flex; gap:6px;">
+          <button class="btn-filtro-prioridad activo" data-filtro-prioridad="todas">
+            Todas
+          </button>
+          <button class="btn-filtro-prioridad" data-filtro-prioridad="alta" style="color:#dc2626;">
+            Alta
+          </button>
+          <button class="btn-filtro-prioridad" data-filtro-prioridad="media" style="color:#d97706;">
+            Media
+          </button>
+          <button class="btn-filtro-prioridad" data-filtro-prioridad="baja" style="color:#059669;">
+            Baja
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Contador de tareas -->
+    <p id="textoContador" style="font-size:0.85rem; color:var(--color-texto-suave); margin-bottom:10px; padding-left:2px;"></p>
+
+    <!-- Lista de tareas -->
+    <div id="listaTareas" class="lista-items"></div>
+
+  </main>
+
+  <!-- ==========================================
+       MODAL: AGREGAR / EDITAR TAREA
+       Aparece cuando se presiona "+ Nueva tarea"
+       o cuando se toca una tarea existente.
+  =========================================== -->
+  <div class="modal-fondo" id="modalTarea" style="display:none;">
+    <div class="modal-caja">
+
+      <!-- Título del modal + botón cerrar -->
+      <div class="modal-titulo">
+        <span id="modalTareasTitulo">Nueva tarea</span>
+        <button class="modal-cerrar" id="btnCerrarModal" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Formulario de la tarea -->
+      <form id="formTarea" novalidate>
+
+        <!-- ID oculto (para saber si estamos editando) -->
+        <input type="hidden" id="tareaId">
+
+        <!-- Título -->
+        <div class="grupo-campo">
+          <label class="etiqueta" for="tareaTitulo">Título *</label>
+          <input class="campo" type="text" id="tareaTitulo" placeholder="Ej: Pagar arriendo" maxlength="100" required>
+        </div>
+
+        <!-- Descripción -->
+        <div class="grupo-campo">
+          <label class="etiqueta" for="tareaDescripcion">Descripción (opcional)</label>
+          <textarea class="campo" id="tareaDescripcion" placeholder="Detalles adicionales..." rows="3" style="resize:vertical;" maxlength="500"></textarea>
+        </div>
+
+        <!-- Fecha límite y Prioridad en dos columnas -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="grupo-campo" style="margin-bottom:0;">
+            <label class="etiqueta" for="tareaFecha">Fecha límite</label>
+            <input class="campo" type="date" id="tareaFecha">
+          </div>
+          <div class="grupo-campo" style="margin-bottom:0;">
+            <label class="etiqueta" for="tareaPrioridad">Prioridad</label>
+            <select class="campo" id="tareaPrioridad">
+              <option value="media">Media</option>
+              <option value="alta">Alta</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Categoría -->
+        <div class="grupo-campo" style="margin-top:14px;">
+          <label class="etiqueta" for="tareaCategoria">Categoría (opcional)</label>
+          <input class="campo" type="text" id="tareaCategoria" placeholder="Ej: Trabajo, Personal, Finanzas..." maxlength="50" list="listaCategorias">
+          <!-- Sugerencias de categorías usadas antes -->
+          <datalist id="listaCategorias"></datalist>
+        </div>
+
+        <!-- Botones guardar / eliminar -->
+        <div class="modal-acciones">
+          <button type="button" class="btn btn-peligro" id="btnEliminarTarea" style="display:none; flex:0 0 auto;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3,6 5,6 21,6"/>
+              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+            </svg>
+            Eliminar
+          </button>
+          <button type="submit" class="btn btn-primario">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+              <polyline points="17,21 17,13 7,13 7,21"/>
+            </svg>
+            Guardar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts: primero la base de datos, luego la app, luego este módulo -->
+  <script src="../js/db.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/modules/tareas.js"></script>
+
+</body>
+</html>

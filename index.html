@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="description" content="Mi App Personal - Agenda, tareas, notas y más">
+
+  <!-- Hace que la app se vea como una app nativa en iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MiApp">
+
+  <title>Mi App Personal</title>
+
+  <!-- Configuración PWA (para instalar como app) -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       MENÚ DE NAVEGACIÓN INFERIOR
+       En celular: aparece abajo
+       En computador: aparece a la izquierda
+  =========================================== -->
+  <nav class="menu-inferior" id="menuNavegacion">
+
+    <!-- Logo (solo visible en computador) -->
+    <div class="menu-logo" id="menuLogo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      Mi App
+    </div>
+
+    <!-- Inicio -->
+    <a href="index.html" class="menu-item activo" data-pagina="inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9,22 9,12 15,12 15,22"/>
+      </svg>
+      Inicio
+    </a>
+
+    <!-- Agenda -->
+    <a href="pages/agenda.html" class="menu-item" data-pagina="agenda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Agenda
+    </a>
+
+    <!-- Tareas -->
+    <a href="pages/tareas.html" class="menu-item" data-pagina="tareas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9,11 12,14 22,4"/>
+        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+      </svg>
+      Tareas
+    </a>
+
+    <!-- Notas -->
+    <a href="pages/notas.html" class="menu-item" data-pagina="notas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14,2 14,8 20,8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Notas
+    </a>
+
+    <!-- Finanzas -->
+    <a href="pages/finanzas.html" class="menu-item" data-pagina="finanzas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"/>
+        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+      </svg>
+      Finanzas
+    </a>
+
+    <!-- Más módulos (panel lateral en computador) -->
+    <a href="pages/datos.html" class="menu-item" data-pagina="datos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      Datos
+    </a>
+
+    <a href="pages/conversor.html" class="menu-item" data-pagina="conversor">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="17,1 21,5 17,9"/>
+        <path d="M3 11V9a4 4 0 014-4h14"/>
+        <polyline points="7,23 3,19 7,15"/>
+        <path d="M21 13v2a4 4 0 01-4 4H3"/>
+      </svg>
+      Conversor
+    </a>
+
+    <a href="pages/ordenar.html" class="menu-item" data-pagina="ordenar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      Ordenar
+    </a>
+
+  </nav>
+
+  <!-- ==========================================
+       ENCABEZADO
+  =========================================== -->
+  <header class="encabezado">
+    <h1>Mi App Personal</h1>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <!-- Indicador de sincronización -->
+      <span id="estadoSync" title="Estado de sincronización" style="font-size:0.75rem; color:var(--color-texto-suave)">
+        Sin conexión
+      </span>
+      <!-- Botón modo oscuro/claro -->
+      <button class="interruptor" id="btnTema" title="Cambiar tema" aria-label="Cambiar modo claro/oscuro"></button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       CONTENIDO PRINCIPAL - DASHBOARD
+  =========================================== -->
+  <main class="contenido pagina-enter" id="contenidoPrincipal">
+
+    <!-- Saludo -->
+    <div style="margin-bottom:20px;">
+      <p id="saludo" style="font-size:1.4rem; font-weight:700;"></p>
+      <p id="fechaHoy" style="color:var(--color-texto-suave); font-size:0.9rem; margin-top:4px;"></p>
+    </div>
+
+    <!-- Resumen rápido: 4 números -->
+    <div class="dos-columnas" style="margin-bottom:16px;">
+      <div class="tarjeta" style="text-align:center;">
+        <div class="tarjeta-titulo">Tareas hoy</div>
+        <div class="numero-grande" id="contadorTareas">0</div>
+        <div style="font-size:0.8rem; color:var(--color-texto-suave); margin-top:4px;">pendientes</div>
+      </div>
+      <div class="tarjeta" style="text-align:center;">
+        <div class="tarjeta-titulo">Eventos hoy</div>
+        <div class="numero-grande" id="contadorEventos">0</div>
+        <div style="font-size:0.8rem; color:var(--color-texto-suave); margin-top:4px;">en agenda</div>
+      </div>
+      <div class="tarjeta" style="text-align:center;">
+        <div class="tarjeta-titulo">Notas</div>
+        <div class="numero-grande" id="contadorNotas">0</div>
+        <div style="font-size:0.8rem; color:var(--color-texto-suave); margin-top:4px;">guardadas</div>
+      </div>
+      <div class="tarjeta" style="text-align:center;">
+        <div class="tarjeta-titulo">Gastos mes</div>
+        <div class="numero-grande" id="resumenGastos" style="font-size:1.3rem;">$0</div>
+        <div style="font-size:0.8rem; color:var(--color-texto-suave); margin-top:4px;">del presupuesto</div>
+      </div>
+    </div>
+
+    <!-- Próximas tareas -->
+    <div class="tarjeta">
+      <div class="tarjeta-titulo">Tareas pendientes</div>
+      <div id="listaTareasDash" class="lista-items">
+        <div class="vacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="9,11 12,14 22,4"/>
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+          </svg>
+          <p>No hay tareas pendientes</p>
+        </div>
+      </div>
+      <a href="pages/tareas.html" class="btn btn-secundario" style="margin-top:12px; width:100%; justify-content:center;">
+        Ver todas las tareas
+      </a>
+    </div>
+
+    <!-- Próximos eventos -->
+    <div class="tarjeta">
+      <div class="tarjeta-titulo">Próximos eventos</div>
+      <div id="listaEventosDash" class="lista-items">
+        <div class="vacio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <p>No hay eventos próximos</p>
+        </div>
+      </div>
+      <a href="pages/agenda.html" class="btn btn-secundario" style="margin-top:12px; width:100%; justify-content:center;">
+        Ver agenda
+      </a>
+    </div>
+
+    <!-- Accesos rápidos -->
+    <div class="tarjeta">
+      <div class="tarjeta-titulo">Accesos rápidos</div>
+      <div class="accesos-rapidos">
+        <a href="pages/tareas.html" class="acceso-item">
+          <div class="acceso-icono" style="background:#1a73e8;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,11 12,14 22,4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          Tareas
+        </a>
+        <a href="pages/notas.html" class="acceso-item">
+          <div class="acceso-icono" style="background:#0f9d58;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+            </svg>
+          </div>
+          Notas
+        </a>
+        <a href="pages/finanzas.html" class="acceso-item">
+          <div class="acceso-icono" style="background:#f9ab00;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+            </svg>
+          </div>
+          Finanzas
+        </a>
+        <a href="pages/agenda.html" class="acceso-item">
+          <div class="acceso-icono" style="background:#e91e63;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          Agenda
+        </a>
+        <a href="pages/datos.html" class="acceso-item">
+          <div class="acceso-icono" style="background:#00bcd4;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </div>
+          Datos
+        </a>
+        <a href="pages/conversor.html" class="acceso-item">
+          <div class="acceso-icono" style="background:#ff5722;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="17,1 21,5 17,9"/>
+              <path d="M3 11V9a4 4 0 014-4h14"/>
+              <polyline points="7,23 3,19 7,15"/>
+            </svg>
+          </div>
+          Conversor
+        </a>
+        <a href="pages/ordenar.html" class="acceso-item">
+          <div class="acceso-icono" style="background:#607d8b;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"/>
+              <line x1="8" y1="12" x2="21" y2="12"/>
+              <line x1="8" y1="18" x2="21" y2="18"/>
+            </svg>
+          </div>
+          Ordenar
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/modules/dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+/* =====================================================
+   ESTILOS PRINCIPALES - MI APP PERSONAL
+   Aquí se define el diseño general: colores, fuentes,
+   modo claro y modo oscuro.
+===================================================== */
+
+/* --- Variables de color (modo claro por defecto) --- */
+:root {
+  --color-primario: #1a73e8;
+  --color-primario-oscuro: #1557b0;
+  --color-primario-claro: #e8f0fe;
+  --color-fondo: #f5f7fa;
+  --color-superficie: #ffffff;
+  --color-texto: #1f2937;
+  --color-texto-suave: #6b7280;
+  --color-borde: #e5e7eb;
+  --color-exito: #10b981;
+  --color-alerta: #f59e0b;
+  --color-error: #ef4444;
+  --sombra: 0 2px 8px rgba(0,0,0,0.08);
+  --sombra-fuerte: 0 4px 16px rgba(0,0,0,0.12);
+  --radio-borde: 12px;
+  --altura-menu: 64px;
+}
+
+/* --- Variables de color para modo oscuro --- */
+[data-tema="oscuro"] {
+  --color-primario: #4d9cf8;
+  --color-primario-oscuro: #1a73e8;
+  --color-primario-claro: #1e3a5f;
+  --color-fondo: #111827;
+  --color-superficie: #1f2937;
+  --color-texto: #f9fafb;
+  --color-texto-suave: #9ca3af;
+  --color-borde: #374151;
+  --sombra: 0 2px 8px rgba(0,0,0,0.3);
+  --sombra-fuerte: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+/* --- Reset básico --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Estilo base del cuerpo --- */
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  min-height: 100vh;
+  padding-bottom: var(--altura-menu);
+  transition: background-color 0.3s, color 0.3s;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Encabezado de cada página --- */
+.encabezado {
+  background-color: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+  padding: 16px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--sombra);
+}
+
+.encabezado h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primario);
+}
+
+/* --- Contenido principal --- */
+.contenido {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* --- Tarjetas --- */
+.tarjeta {
+  background-color: var(--color-superficie);
+  border-radius: var(--radio-borde);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--sombra);
+  border: 1px solid var(--color-borde);
+}
+
+.tarjeta-titulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+/* --- Menú de navegación inferior (celular) --- */
+.menu-inferior {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--altura-menu);
+  background-color: var(--color-superficie);
+  border-top: 1px solid var(--color-borde);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 200;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  color: var(--color-texto-suave);
+  font-size: 0.65rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.menu-item:hover,
+.menu-item.activo {
+  color: var(--color-primario);
+  background-color: var(--color-primario-claro);
+}
+
+.menu-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* --- Menú lateral para computador --- */
+@media (min-width: 769px) {
+  body {
+    padding-bottom: 0;
+    padding-left: 240px;
+  }
+
+  .menu-inferior {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: auto;
+    width: 240px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 20px 12px;
+    gap: 4px;
+    border-top: none;
+    border-right: 1px solid var(--color-borde);
+    overflow-x: visible;
+    overflow-y: auto;
+  }
+
+  .menu-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primario);
+  }
+
+  .menu-item {
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+    padding: 10px 14px;
+  }
+}
+
+/* --- Botones --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primario {
+  background-color: var(--color-primario);
+  color: #fff;
+}
+
+.btn-primario:hover { opacity: 0.88; }
+
+.btn-secundario {
+  background-color: var(--color-primario-claro);
+  color: var(--color-primario);
+}
+
+.btn-peligro {
+  background-color: var(--color-error);
+  color: #fff;
+}
+
+/* --- Campos de formulario --- */
+.campo {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-borde);
+  border-radius: 8px;
+  background-color: var(--color-superficie);
+  color: var(--color-texto);
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.campo:focus {
+  border-color: var(--color-primario);
+}
+
+.etiqueta {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+  margin-bottom: 6px;
+}
+
+.grupo-campo {
+  margin-bottom: 14px;
+}
+
+/* --- Insignias de prioridad --- */
+.insignia {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.insignia-alta  { background: #fee2e2; color: #dc2626; }
+.insignia-media { background: #fef3c7; color: #d97706; }
+.insignia-baja  { background: #d1fae5; color: #059669; }
+
+/* --- Animación de entrada --- */
+.pagina-enter {
+  animation: entrar 0.25s ease-out;
+}
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Mensaje cuando no hay datos --- */
+.vacio {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-texto-suave);
+}
+
+.vacio svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
