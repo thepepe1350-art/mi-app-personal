@@ -396,13 +396,22 @@
 .calendario-dia {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 6px 2px 4px;
-  border-radius: 8px;
+  align-items: stretch;
+  padding: 4px 3px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 0.82rem;
-  min-height: 40px;
+  min-height: 80px;
   transition: background 0.15s;
+  overflow: hidden;
+}
+
+.calendario-dia > span {
+  display: block;
+  text-align: center;
+  margin-bottom: 3px;
+  font-size: 0.82rem;
+  flex-shrink: 0;
 }
 
 .calendario-dia:hover { background: var(--color-primario-claro); }
@@ -420,11 +429,19 @@
 
 .calendario-dia.otro-mes { opacity: 0.28; }
 
-.punto-evento {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  margin-top: 3px;
+.etiqueta-cal {
+  display: block;
+  font-size: 0.6rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+  font-weight: 500;
+  line-height: 1.5;
+  flex-shrink: 0;
 }
 
 /* Bolas de color para el selector de eventos */

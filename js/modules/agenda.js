@@ -92,16 +92,16 @@ function crearCeldaDia(dia, anio, mes, otroMes) {
     (esSel    ? ' seleccionado': '');
   celda.dataset.fecha = fecha;
 
-  /* Puntos de eventos (hasta 3 en total entre eventos y tareas) */
-  const puntosEventos = eventos.slice(0, 3).map(e =>
-    `<div class="punto-evento" style="background:${e.color || '#1a73e8'};"></div>`
+  /* Etiquetas con título (hasta 3 en total entre eventos y tareas) */
+  const etiquetasEventos = eventos.slice(0, 3).map(e =>
+    `<div class="etiqueta-cal" style="background:${e.color || '#1a73e8'};">${escaparHTML(e.titulo)}</div>`
   );
-  const espacioRestante = 3 - puntosEventos.length;
-  const puntosTareas = tareas.slice(0, espacioRestante).map(t =>
-    `<div class="punto-evento" style="background:${t.completada ? '#9ca3af' : '#f59e0b'};"></div>`
+  const espacioRestante = 3 - etiquetasEventos.length;
+  const etiquetasTareas = tareas.slice(0, espacioRestante).map(t =>
+    `<div class="etiqueta-cal" style="background:${t.completada ? '#9ca3af' : '#f59e0b'};">${escaparHTML(t.titulo)}</div>`
   );
 
-  celda.innerHTML = `<span>${dia}</span>` + puntosEventos.join('') + puntosTareas.join('');
+  celda.innerHTML = `<span>${dia}</span>` + etiquetasEventos.join('') + etiquetasTareas.join('');
 
   celda.addEventListener('click', () => {
     diaSeleccionado = fecha;
