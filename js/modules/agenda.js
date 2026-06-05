@@ -20,6 +20,7 @@ let diaSeleccionado = hoyISO();         /* 'YYYY-MM-DD' del día seleccionado */
 let eventoEditandoId = null;
 let colorSeleccionado = COLORES_EVENTO[0].hex;
 let todosLosEventos = [];               /* caché de eventos cargados */
+let todasLasTareas  = [];              /* caché de tareas con fecha */
 
 document.addEventListener('DOMContentLoaded', async () => {
   mesViendose = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function cargarEventos() {
   todosLosEventos = await obtenerTodos('eventos').catch(() => []);
+  todasLasTareas  = (await obtenerTodos('tareas').catch(() => [])).filter(t => t.fecha);
   renderizarCalendario();
   renderizarEventosDia(diaSeleccionado);
 }
@@ -81,6 +83,7 @@ function crearCeldaDia(dia, anio, mes, otroMes) {
   const esHoy   = fecha === hoyISO();
   const esSel   = fecha === diaSeleccionado;
   const eventos = todosLosEventos.filter(e => e.fecha === fecha);
+  const tareas  = todasLasTareas.filter(t => t.fecha === fecha);
 
   const celda = document.createElement('div');
   celda.className = 'calendario-dia' +
@@ -89,10 +92,16 @@ function crearCeldaDia(dia, anio, mes, otroMes) {
     (esSel    ? ' seleccionado': '');
   celda.dataset.fecha = fecha;
 
-  celda.innerHTML = `<span>${dia}</span>` +
-    eventos.slice(0, 3).map(e =>
-      `<div class="punto-evento" style="background:${e.color || '#1a73e8'};"></div>`
-    ).join('');
+  /* Puntos de eventos (hasta 3 en total entre eventos y tareas) */
+  const puntosEventos = eventos.slice(0, 3).map(e =>
+    `<div class="punto-evento" style="background:${e.color || '#1a73e8'};"></div>`
+  );
+  const espacioRestante = 3 - puntosEventos.length;
+  const puntosTareas = tareas.slice(0, espacioRestante).map(t =>
+    `<div class="punto-evento" style="background:${t.completada ? '#9ca3af' : '#f59e0b'};"></div>`
+  );
+
+  celda.innerHTML = `<span>${dia}</span>` + puntosEventos.join('') + puntosTareas.join('');
 
   celda.addEventListener('click', () => {
     diaSeleccionado = fecha;
@@ -107,6 +116,7 @@ function crearCeldaDia(dia, anio, mes, otroMes) {
 
 function renderizarEventosDia(fecha) {
   const eventos  = todosLosEventos.filter(e => e.fecha === fecha);
+  const tareas   = todasLasTareas.filter(t => t.fecha === fecha);
   const titulo   = document.getElementById('tituloDia');
   const contenedor = document.getElementById('eventosDia');
 
@@ -114,36 +124,73 @@ function renderizarEventosDia(fecha) {
     ? `Hoy — ${formatearFechaLarga(fecha)}`
     : formatearFechaLarga(fecha);
 
-  if (eventos.length === 0) {
+  if (eventos.length === 0 && tareas.length === 0) {
     contenedor.innerHTML = `
       <div class="vacio" style="padding:24px 20px;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
           <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
         </svg>
-        <p>Sin eventos. ¡Agrega uno!</p>
+        <p>Sin eventos ni tareas. ¡Agrega uno!</p>
       </div>`;
     return;
   }
 
-  /* Ordena por hora de inicio */
-  eventos.sort((a, b) => (a.horaInicio || '').localeCompare(b.horaInicio || ''));
+  let html = '';
 
-  contenedor.innerHTML = eventos.map(ev => `
-    <div class="lista-item" id="evento-${ev.id}" style="border-left:4px solid ${ev.color || '#1a73e8'}; cursor:pointer;">
-      <div style="flex:1; min-width:0;">
-        <div class="lista-item-titulo">${escaparHTML(ev.titulo)}</div>
-        <div class="lista-item-subtitulo">
-          ${ev.horaInicio ? `${ev.horaInicio}${ev.horaFin ? ' – ' + ev.horaFin : ''}` : 'Sin hora'}
-          ${ev.descripcion ? ' · ' + escaparHTML(ev.descripcion.slice(0,50)) : ''}
+  /* ── Eventos ── */
+  if (eventos.length > 0) {
+    eventos.sort((a, b) => (a.horaInicio || '').localeCompare(b.horaInicio || ''));
+    html += eventos.map(ev => `
+      <div class="lista-item" id="evento-${ev.id}" style="border-left:4px solid ${ev.color || '#1a73e8'}; cursor:pointer;">
+        <div style="flex:1; min-width:0;">
+          <div class="lista-item-titulo">${escaparHTML(ev.titulo)}</div>
+          <div class="lista-item-subtitulo">
+            ${ev.horaInicio ? `${ev.horaInicio}${ev.horaFin ? ' – ' + ev.horaFin : ''}` : 'Sin hora'}
+            ${ev.descripcion ? ' · ' + escaparHTML(ev.descripcion.slice(0,50)) : ''}
+          </div>
         </div>
-      </div>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-borde); flex-shrink:0;"><polyline points="9,18 15,12 9,6"/></svg>
-    </div>`).join('');
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--color-borde); flex-shrink:0;"><polyline points="9,18 15,12 9,6"/></svg>
+      </div>`).join('');
+  }
 
+  /* ── Tareas ── */
+  if (tareas.length > 0) {
+    if (eventos.length > 0) {
+      html += `<div style="font-size:0.75rem; font-weight:600; color:var(--color-texto-suave); padding:10px 12px 4px; text-transform:uppercase; letter-spacing:0.05em;">Tareas</div>`;
+    }
+    const coloresPrioridad = { alta: '#dc2626', media: '#d97706', baja: '#059669' };
+    html += tareas.map(t => `
+      <div class="lista-item${t.completada ? ' lista-item-completado' : ''}" id="agenda-tarea-${t.id}" style="border-left:4px solid ${t.completada ? '#9ca3af' : '#f59e0b'};">
+        <div class="checkbox-custom${t.completada ? ' marcado' : ''}" id="agenda-check-${t.id}" title="${t.completada ? 'Marcar como pendiente' : 'Marcar como completada'}" style="cursor:pointer; flex-shrink:0;"></div>
+        <div style="flex:1; min-width:0;">
+          <div class="lista-item-titulo">${escaparHTML(t.titulo)}</div>
+          <div class="lista-item-subtitulo" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:3px;">
+            ${t.prioridad ? `<span style="color:${coloresPrioridad[t.prioridad] || '#6b7280'}; font-weight:600;">${capitalizar(t.prioridad)}</span>` : ''}
+            ${t.categoria ? `<span>🏷 ${escaparHTML(t.categoria)}</span>` : ''}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  contenedor.innerHTML = html;
+
+  /* Eventos: abrir modal al hacer clic */
   eventos.forEach(ev => {
     document.getElementById(`evento-${ev.id}`)
       ?.addEventListener('click', () => abrirModalEditar(ev));
+  });
+
+  /* Tareas: toggle completada al hacer clic en el checkbox */
+  tareas.forEach(t => {
+    document.getElementById(`agenda-check-${t.id}`)
+      ?.addEventListener('click', async () => {
+        const tarea = await obtenerPorId('tareas', t.id).catch(() => null);
+        if (!tarea) return;
+        tarea.completada = !tarea.completada;
+        await guardar('tareas', tarea);
+        await cargarEventos();
+      });
   });
 }
 
@@ -272,6 +319,10 @@ function formatearFechaLarga(fechaISO) {
   return new Date(a, m - 1, d).toLocaleDateString('es-ES', {
     weekday: 'long', day: 'numeric', month: 'long'
   });
+}
+
+function capitalizar(texto) {
+  return texto ? texto.charAt(0).toUpperCase() + texto.slice(1) : '';
 }
 
 function escaparHTML(texto) {
