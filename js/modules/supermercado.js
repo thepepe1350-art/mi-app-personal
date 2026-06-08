@@ -663,6 +663,16 @@ async function guardarCompra() {
     });
   }
 
+  /* Registrar el total de la compra en Finanzas → categoría Alimentación */
+  const totalCompra = itemsCompra.reduce((s, i) => s + i.precio * i.cantidad, 0);
+  await guardar('finanzas', {
+    monto:       totalCompra,
+    categoria:   'Alimentación',
+    descripcion: '🛒 Supermercado' + (super_ ? ' — ' + super_ : ''),
+    fecha,
+    origen:      'supermercado'
+  });
+
   cerrarModalCompra();
   await cargarTodo();
 }
