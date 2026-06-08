@@ -4,7 +4,7 @@
    El navegador lo ejecuta en segundo plano.
 ===================================================== */
 
-const VERSION_CACHE = 'mi-app-v1';
+const VERSION_CACHE = 'mi-app-v2';
 
 /* Lista de archivos que se guardan para usar sin internet */
 const ARCHIVOS_CACHE = [
@@ -33,6 +33,8 @@ const ARCHIVOS_CACHE = [
   '/pages/contactos.html',
   '/pages/conversor.html',
   '/pages/ordenar.html',
+  '/pages/supermercado.html',
+  '/js/modules/supermercado.js',
   '/libs/chart.min.js',
   '/libs/xlsx.min.js'
 ];

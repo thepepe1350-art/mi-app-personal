@@ -5,7 +5,7 @@
 ===================================================== */
 
 const BD_NOMBRE = 'MiAppPersonal';
-const BD_VERSION = 1;
+const BD_VERSION = 2;
 let bd = null;
 
 /* Abre (o crea) la base de datos */
@@ -42,6 +42,17 @@ function abrirBD() {
       }
       if (!db.objectStoreNames.contains('configuracion')) {
         db.createObjectStore('configuracion', { keyPath: 'clave' });
+      }
+      if (!db.objectStoreNames.contains('super_productos')) {
+        const sp = db.createObjectStore('super_productos', { keyPath: 'id', autoIncrement: true });
+        sp.createIndex('categoria', 'categoria', { unique: false });
+        sp.createIndex('prioridad', 'prioridad', { unique: false });
+      }
+      if (!db.objectStoreNames.contains('super_compras')) {
+        const sc = db.createObjectStore('super_compras', { keyPath: 'id', autoIncrement: true });
+        sc.createIndex('fecha',      'fecha',      { unique: false });
+        sc.createIndex('productoId', 'productoId', { unique: false });
+        sc.createIndex('categoria',  'categoria',  { unique: false });
       }
     };
 
