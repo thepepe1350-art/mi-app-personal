@@ -108,9 +108,7 @@
   <header class="encabezado">
     <h1>Finanzas</h1>
     <div style="display:flex; align-items:center; gap:8px;">
-      <!-- Selector de mes -->
       <input type="month" id="selectorMes" class="campo" style="padding:6px 10px; font-size:0.85rem; width:auto;">
-      <!-- Botón gestionar categorías -->
       <button class="btn btn-secundario" id="btnGestionarCats" style="padding:8px 12px;" title="Gestionar categorías">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"/>
@@ -144,8 +142,61 @@
           Guardar
         </button>
       </div>
-      <!-- Totales del mes (se rellena con JS) -->
       <div id="resumenMes"></div>
+    </div>
+
+    <!-- ── Gráficos ── -->
+    <div class="tarjeta">
+      <div class="tarjeta-titulo">Gráficos</div>
+
+      <!-- Botones de tab -->
+      <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+        <button class="tab-grafico btn btn-primario" data-tab="distribucion"
+          style="padding:7px 14px; font-size:0.82rem; flex:1; min-width:100px;">
+          Distribución
+        </button>
+        <button class="tab-grafico btn btn-secundario" data-tab="presupuesto"
+          style="padding:7px 14px; font-size:0.82rem; flex:1; min-width:100px;">
+          Ppto. vs Real
+        </button>
+        <button class="tab-grafico btn btn-secundario" data-tab="evolucion"
+          style="padding:7px 14px; font-size:0.82rem; flex:1; min-width:100px;">
+          Evolución
+        </button>
+      </div>
+
+      <!-- Panel: Distribución de gastos (dona) -->
+      <div id="panel-distribucion" class="panel-grafico">
+        <canvas id="graficoDistribucion" style="max-height:300px;"></canvas>
+      </div>
+
+      <!-- Panel: Presupuesto vs Real (barras) -->
+      <div id="panel-presupuesto" class="panel-grafico" style="display:none;">
+        <canvas id="graficoPresupuesto" style="max-height:300px;"></canvas>
+      </div>
+
+      <!-- Panel: Evolución mensual (línea) -->
+      <div id="panel-evolucion" class="panel-grafico" style="display:none;">
+        <canvas id="graficoEvolucion" style="max-height:300px;"></canvas>
+      </div>
+    </div>
+
+    <!-- ── Metas de Ahorro ── -->
+    <div class="tarjeta">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div class="tarjeta-titulo" style="margin-bottom:0;">Metas de Ahorro</div>
+        <button class="btn btn-primario" id="btnAgregarMeta" style="padding:8px 14px; font-size:0.84rem; white-space:nowrap;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle; margin-right:4px;">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Nueva meta
+        </button>
+      </div>
+      <!-- Proyección promedio de ahorro -->
+      <div id="proyeccionAhorro"></div>
+      <!-- Lista de metas -->
+      <div id="listaMetas"></div>
     </div>
 
     <!-- ── Presupuesto por categoría ── -->
@@ -198,14 +249,10 @@
         </button>
       </div>
       <form id="formGasto" novalidate>
-
-        <!-- Monto -->
         <div class="grupo-campo">
           <label class="etiqueta" for="gastoMonto">Monto *</label>
           <input class="campo" type="number" id="gastoMonto" placeholder="Ej: 15000" min="1" required>
         </div>
-
-        <!-- Categoría y Fecha en dos columnas -->
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
           <div class="grupo-campo" style="margin-bottom:0;">
             <label class="etiqueta" for="gastoCat">Categoría</label>
@@ -216,13 +263,10 @@
             <input class="campo" type="date" id="gastoFecha">
           </div>
         </div>
-
-        <!-- Descripción -->
         <div class="grupo-campo" style="margin-top:14px;">
           <label class="etiqueta" for="gastoDesc">Descripción (opcional)</label>
           <input class="campo" type="text" id="gastoDesc" placeholder="Ej: Supermercado Lider" maxlength="100">
         </div>
-
         <div class="modal-acciones">
           <button type="submit" class="btn btn-primario">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -232,7 +276,6 @@
             Guardar gasto
           </button>
         </div>
-
       </form>
     </div>
   </div>
@@ -250,11 +293,7 @@
           </svg>
         </button>
       </div>
-
-      <!-- Lista de categorías existentes -->
       <div id="listaCatsModal" style="margin-bottom:20px;"></div>
-
-      <!-- Formulario para agregar nueva categoría -->
       <div class="separador"></div>
       <p style="font-size:0.85rem; font-weight:600; color:var(--color-texto-suave); margin:14px 0 10px;">Agregar nueva categoría</p>
       <form id="formNuevaCat" novalidate style="display:flex; gap:8px;">
@@ -263,10 +302,83 @@
           Agregar
         </button>
       </form>
-
     </div>
   </div>
 
+  <!-- ==========================================
+       MODAL: NUEVA META DE AHORRO
+  =========================================== -->
+  <div class="modal-fondo" id="modalMeta" style="display:none;">
+    <div class="modal-caja">
+      <div class="modal-titulo">
+        <span>Nueva meta de ahorro</span>
+        <button class="modal-cerrar" id="btnCerrarModalMeta" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <form id="formMeta" novalidate>
+        <div class="grupo-campo">
+          <label class="etiqueta" for="metaNombre">Nombre de la meta *</label>
+          <input class="campo" type="text" id="metaNombre" placeholder="Ej: Computador nuevo" maxlength="60" required>
+        </div>
+        <div class="grupo-campo">
+          <label class="etiqueta" for="metaMonto">Costo total *</label>
+          <input class="campo" type="number" id="metaMonto" placeholder="Ej: 1200000" min="1" required>
+        </div>
+        <div class="grupo-campo">
+          <label class="etiqueta" for="metaAhorroPorMes">¿Cuánto podés ahorrar por mes? *</label>
+          <input class="campo" type="number" id="metaAhorroPorMes" placeholder="Ej: 150000" min="1" required>
+        </div>
+        <!-- Cálculo en tiempo real -->
+        <div id="calculoMeta" style="display:none; padding:10px 14px; background:rgba(26,115,232,0.08); border-radius:10px; border-left:3px solid #1a73e8; font-size:0.85rem; margin-bottom:14px;"></div>
+        <div class="modal-acciones">
+          <button type="submit" class="btn btn-primario">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12,6 12,12 16,14"/>
+            </svg>
+            Crear meta
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: ABONAR A META
+  =========================================== -->
+  <div class="modal-fondo" id="modalAbonar" style="display:none;">
+    <div class="modal-caja">
+      <div class="modal-titulo">
+        <span>Abonar a meta</span>
+        <button class="modal-cerrar" id="btnCerrarModalAbonar" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <p id="infoMetaAbonar" style="font-size:0.85rem; color:var(--color-texto-suave); margin-bottom:14px; line-height:1.5;"></p>
+      <form id="formAbonar" novalidate>
+        <div class="grupo-campo">
+          <label class="etiqueta" for="montoAbonar">Monto a abonar *</label>
+          <input class="campo" type="number" id="montoAbonar" placeholder="Ej: 50000" min="1" required>
+        </div>
+        <div class="modal-acciones">
+          <button type="submit" class="btn btn-primario">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+            </svg>
+            Abonar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../js/db.js"></script>
   <script src="../js/app.js"></script>
   <script src="../js/modules/finanzas.js"></script>
